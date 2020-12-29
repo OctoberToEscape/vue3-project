@@ -1,3 +1,3 @@
 <template lang="pug">
-.test 测试
+.test 测试1
 </template>
