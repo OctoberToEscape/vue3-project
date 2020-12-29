@@ -21,7 +21,7 @@ $zy_col_gray_desc: #525253;
 // 背景颜色
 $zy_bg_white: #fff;
 $zy_bg_gray: #f5f5f5;
-$zy_bg_black: #33323a;
+$zy_bg_black3: #33323a;
 $zy_bg_black2: #2c2b32;
 
 //边框色
@@ -36,15 +36,13 @@ $zy_bd_white: #fff;
 }
 
 //字体常用
-@mixin fontColor($fs, $col, $leh, $fw: false, $center: false) {
+@mixin fontColor($fs, $col, $leh, $fw: false, $align: left) {
     font-size: $fs;
     color: $col;
     line-height: $leh;
+    text-align: $align;
     @if $fw {
         font-weight: bold;
-    }
-    @if $center {
-        text-align: center;
     }
 }
 

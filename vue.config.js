@@ -31,6 +31,14 @@ module.exports = {
                                 "^/api": "",
                             },
                         },
+                        "/gcApi": {
+                            target: "https://v2.diancang.site/v2",
+                            changeOrigin: true,
+                            secure: false,
+                            pathRewrite: {
+                                "^/gcApi": "",
+                            },
+                        },
                     },
                     watchOptions: {
                         poll: true,

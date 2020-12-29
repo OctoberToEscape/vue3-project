@@ -13,7 +13,6 @@ interface PendingType {
 }
 
 let loading: VanToast | null = null;
-const API = process.env.VUE_APP_BASE_API;
 const pendingList: Array<PendingType> = [];
 const CancelToken = axios.CancelToken;
 
@@ -39,7 +38,6 @@ const removePending = (config: AxiosRequestConfig): void => {
 
 const service = axios.create({
     timeout: 5000,
-    baseURL: API,
     headers: {
         Accept: "application/json; charset=utf-8",
         "Content-Type": "application/json; charset=utf-8",
