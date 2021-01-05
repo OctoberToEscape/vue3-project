@@ -74,6 +74,15 @@
     video-area(:inf="worldArea" videoType="world")
     //- 中国名师
     intro(:inf="masterIntro")
+    //- 二维码区域
+    .qrcode
+        .qrcode-img
+            img(src="@/assets/images/qrcode.png")
+            p 欢迎下载知鸦APP
+            p 畅学全新通识课程
+        .desc 严肃的内容是对读者最大的尊重。加入我们，在明白世界的这条道路上，你永远不会孤单。
+    //- 页脚
+    warp-fotter
 </template>
 
 <script lang="ts">
@@ -97,9 +106,10 @@ import {
 import { FullScreen } from "@/utils/interface";
 import videoArea from "@/components/videoArea/index.vue";
 import intro from "@/components/introduce/index.vue";
+import warpFotter from "@/components/footer/index.vue";
 export default defineComponent({
     name: "index",
-    components: { videoArea, intro },
+    components: { videoArea, intro, warpFotter },
     setup() {
         const router = useRouter();
 
@@ -416,6 +426,36 @@ export default defineComponent({
                     }
                 }
             }
+        }
+    }
+    .qrcode {
+        @include Padding(0.7rem, 0.55rem);
+        @include settingBackground($url: "../assets/images/black-bg.png");
+        .qrcode-img {
+            @include boxSize(3.38rem, auto);
+            margin: 0 auto 0.7rem auto;
+            img {
+                @include boxSize(3.38rem, 3.38rem);
+                margin: 0 auto 0.15rem;
+            }
+            p {
+                @include fontColor(
+                    $zy_fs_xxl,
+                    $zy_col_white,
+                    0.48rem,
+                    false,
+                    center
+                );
+            }
+        }
+        .desc {
+            @include fontColor(
+                $zy_fs_default,
+                $zy_col_white,
+                0.46rem,
+                true,
+                center
+            );
         }
     }
 }
