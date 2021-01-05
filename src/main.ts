@@ -6,6 +6,7 @@ import Vant from "@/plugins/vant";
 import svgIcon from "@/icons";
 import "vant/lib/index.css";
 import "@/utils/rem";
+import "default-passive-events";
 
 createApp(App)
     .use(store)

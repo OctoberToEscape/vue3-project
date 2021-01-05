@@ -83,6 +83,8 @@
         .desc 严肃的内容是对读者最大的尊重。加入我们，在明白世界的这条道路上，你永远不会孤单。
     //- 页脚
     warp-fotter
+    //- 大屏视频
+    video-player(:show="dialogShow" @close="dialogShow = false")
 </template>
 
 <script lang="ts">
@@ -107,12 +109,13 @@ import { FullScreen } from "@/utils/interface";
 import videoArea from "@/components/videoArea/index.vue";
 import intro from "@/components/introduce/index.vue";
 import warpFotter from "@/components/footer/index.vue";
+import videoPlayer from "@/components/popup/video-player.vue";
 export default defineComponent({
     name: "index",
-    components: { videoArea, intro, warpFotter },
+    components: { videoArea, intro, warpFotter, videoPlayer },
     setup() {
         const router = useRouter();
-
+        const dialogShow = ref<boolean>(false);
         const playerShow = ref<boolean>(false);
         const fullScreen = reactive<{ screen: object }>({ screen: {} });
         const evaluation = reactive<{ list: string[] }>({ list: [] });
@@ -178,7 +181,7 @@ export default defineComponent({
 
         //首屏点击播放
         const handlePlayer = (): void => {
-            console.log("player");
+            dialogShow.value = true;
         };
 
         //名师文萃跳转详情页
@@ -197,6 +200,7 @@ export default defineComponent({
             worldIntro,
             masterIntro,
             playerShow,
+            dialogShow,
 
             fullScreenLoaded,
             handlePlayer,
