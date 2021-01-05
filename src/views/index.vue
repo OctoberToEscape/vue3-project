@@ -40,30 +40,40 @@
             p.mb-15 名师文萃
             .line.mb-15
             .desc 一个汇集名师所有研究领域与问题的学术圣地，一个可供学友尽情汲水的阅读宝库
-        .article-list
-            .item
-                img.avatar(src="@/assets/logo.png")
+        .item(v-for="(item,index) in teacherArticle" :key="index")
+            .article-content
+                van-image.avatar(
+                    width="2.1rem"
+                    height="2.1rem"
+                    fit="cover"
+                    round
+                    :src="item.cover")
                 .article-info.mb-35
-                    .title.mb-15 朱海就老师文萃
-                    .position.mb-25 经济学者，浙江工商大学经济学院教授
-                    .info-desc 「朱海就老师文萃」由「知鸦」从朱海就老师已发表的200多篇文章中精选汇编而成，并由朱海就老师亲自审定授权，以供学友免费在线阅读。
+                    .title.mb-15 {{item.name}}
+                    .position.mb-25 {{item.title}}
+                    .info-desc {{item.introduce}}
                 img.article-line.mb-35(src="@/assets/images/left-red-line.png")
-                .other-list
-                    .title.mb-25 市场经济的基础理论
+                .other-list.mb-60
+                    .title.mb-25 {{item.recommend_category.title}}
                     ul
-                        li
-                            img.left.mr-20(src="@/assets/logo.png")
+                        li.mb-35(
+                            v-for="(ele,index) in item.recommend_category.article" 
+                            :key="index" 
+                            @click="handleDetails(ele.id,ele.is_authorization)")
+                            img.left.mr-20(src="@/assets/images/article-icon.png")
                             .right 
-                                .list-title 
-                                    span 经济学是关于合作的科学
-                                    img.icon(src="@/assets/logo.png")
-                                .list-desc 经济学考察的，不只是人的本身。
+                                .list-title.mb-15
+                                    span.mr-20 {{ele.title}}
+                                    img.icon(src="@/assets/images/authorizeded.png" v-if="ele.is_authorization === 1")
+                                .list-desc {{ele.introduct}}
                 .book-list
-                    .item 哈哈哈哈哈
+                    .book-list-item.mb-35(v-for="(i,index) in item.category" :key="index") {{i}}
     //- 世界虽大明白就好介绍
     intro(:inf="worldIntro")
     //- 世界虽大明白就好视屏区
     video-area(:inf="worldArea" videoType="world")
+    //- 中国名师
+    intro(:inf="masterIntro")
 </template>
 
 <script lang="ts">
@@ -81,6 +91,8 @@ import {
     getFullscreenBackground,
     getPosition,
     getTeacherEvaluation,
+    getTeacherArticle,
+    getFamousMaster,
 } from "@/api/index";
 import { FullScreen } from "@/utils/interface";
 import videoArea from "@/components/videoArea/index.vue";
@@ -98,6 +110,9 @@ export default defineComponent({
             teacherArea: object[];
             worldArea: object;
         }>({ teacherArea: [], worldArea: {} });
+        const article = reactive<{ teacherArticle: object[] }>({
+            teacherArticle: [],
+        });
 
         onMounted((): void => {
             //获取首屏图片和视屏
@@ -122,6 +137,16 @@ export default defineComponent({
             getPosition("2-3-5-4").then((res: object[]): void => {
                 videoArea.teacherArea = res;
             });
+
+            //获取名师文萃列表
+            getTeacherArticle().then((res: object[]): void => {
+                article.teacherArticle = res;
+            });
+
+            //获取名师大家列表
+            getFamousMaster().then((res: object[]): void => {
+                store.dispatch("UPDATA_INTRO", res);
+            });
         });
 
         const teacherIntro = computed((): object => {
@@ -130,6 +155,10 @@ export default defineComponent({
 
         const worldIntro = computed((): object => {
             return store.getters.done_worldIntro;
+        });
+
+        const masterIntro = computed((): object => {
+            return store.state.famousIntro;
         });
 
         //监听首屏图片加载完成
@@ -142,16 +171,26 @@ export default defineComponent({
             console.log("player");
         };
 
+        //名师文萃跳转详情页
+        const handleDetails = (id: number | string, type: number): void => {
+            if (type === 1) {
+                console.log(`跳转详情${id}`);
+            }
+        };
+
         return {
             ...toRefs(fullScreen),
             ...toRefs(evaluation),
             ...toRefs(videoArea),
+            ...toRefs(article),
             teacherIntro,
             worldIntro,
+            masterIntro,
             playerShow,
 
             fullScreenLoaded,
             handlePlayer,
+            handleDetails,
         };
     },
 });
@@ -243,16 +282,18 @@ export default defineComponent({
                 );
             }
         }
-        .article-list {
+        .item {
+            margin-bottom: 2.14rem;
             &:last-child {
                 margin-bottom: 0;
             }
-            .item {
+            .article-content {
                 @include radius(0.1rem);
                 @include Padding(1.37rem, 0.24rem);
-                padding-bottom: 0.65rem;
+                padding-bottom: 0.3rem;
                 background: $zy_bg_white;
                 position: relative;
+
                 .avatar {
                     @include radius(50%);
                     @include boxSize(2.1rem, 2.1rem);
@@ -301,6 +342,7 @@ export default defineComponent({
                             true,
                             left
                         );
+                        @include textEllipsis();
                         position: relative;
                         text-indent: 0.2rem;
                         &:after {
@@ -314,16 +356,63 @@ export default defineComponent({
                         }
                     }
                     ul {
+                        &:last-child {
+                            margin-bottom: 0;
+                        }
                         li {
-                            @include flex($align: left);
+                            @include flex($justify: left);
                             .left {
                                 @include boxSize(0.48rem, 0.48rem);
                                 @include radius(50%);
                             }
                             .right {
                                 @include boxSize(calc(100% - 0.68rem), auto);
+                                .list-title {
+                                    @include flex($justify: left);
+                                    span {
+                                        display: block;
+                                        max-width: 4.39rem;
+                                        @include fontColor(
+                                            $zy_fs_m,
+                                            $zy_col_black_title,
+                                            0.3rem,
+                                            false,
+                                            left
+                                        );
+                                        @include textEllipsis();
+                                    }
+                                    .icon {
+                                        @include boxSize(1.02rem, 0.28rem);
+                                    }
+                                }
+                                .list-desc {
+                                    @include fontColor(
+                                        $zy_fs_xs,
+                                        $zy_col_gray_desc,
+                                        0.3rem,
+                                        false,
+                                        left
+                                    );
+                                    @include textEllipsis();
+                                }
                             }
                         }
+                    }
+                }
+                .book-list {
+                    @include flex($justify: space-between);
+                    flex-wrap: wrap;
+                    .book-list-item {
+                        width: 50%;
+                        flex-shrink: 0;
+                        @include textEllipsis();
+                        @include fontColor(
+                            $zy_fs_m,
+                            $zy_col_black_title,
+                            0.32rem,
+                            true,
+                            left
+                        );
                     }
                 }
             }

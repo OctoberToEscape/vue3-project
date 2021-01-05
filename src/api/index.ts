@@ -37,3 +37,27 @@ export const getTeacherEvaluation = (): Promise<any> => {
         }
     );
 };
+
+//获取文萃列表
+export const getTeacherArticle = (): Promise<any> => {
+    return service({
+        method: "get",
+        url: `${GCAPI}/hometeacherarticle`,
+    }).then(
+        (res: AxiosResponse): AxiosResponse<object> => {
+            return res.data;
+        }
+    );
+};
+
+//获取名师大家列表
+export const getFamousMaster = (): Promise<any> => {
+    return service({
+        method: "get",
+        url: `${GCAPI}/homemasterteacher`,
+    }).then(
+        (res: AxiosResponse): AxiosResponse<object> => {
+            return res.data;
+        }
+    );
+};
