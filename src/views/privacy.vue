@@ -15,12 +15,14 @@ import { getPrivacy } from "@/api/privacy";
 import { useRoute } from "vue-router";
 import { richImageWidth } from "@/utils/common";
 import handleBack from "@/hooks/handleBack";
+import backTop from "@/components/back-top/index.vue";
 export default defineComponent({
     name: "privacy",
+    components: { backTop },
     setup() {
         const route = useRoute();
         const privacy = reactive<{ info: object }>({ info: {} });
-        const loading = ref(true);
+        const loading = ref<boolean>(true);
         const { onClickLeft } = handleBack();
 
         onActivated((): void => {

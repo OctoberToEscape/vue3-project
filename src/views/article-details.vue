@@ -28,9 +28,10 @@ import { getTeacherArticle } from "@/api/article-details";
 import { richImageWidth } from "@/utils/common";
 import handleBack from "@/hooks/handleBack";
 import warpFooter from "@/components/footer/index.vue";
+import backTop from "@/components/back-top/index.vue";
 export default defineComponent({
     name: "article-details",
-    components: { warpFooter },
+    components: { warpFooter, backTop },
     setup() {
         const route = useRoute();
         const loading = ref<boolean>(true);
