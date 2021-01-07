@@ -7,19 +7,22 @@
         :safe-area-inset-top="true"
         @click-left="onClickLeft")
     .details
-        .article-info.mb-40
-            .title.mb-40 {{info.title}}
-            .date.mb-20 {{info.from_to}}
-            .author {{info.authorization}}
-        .sentence.mb-70
-            img.icon-left.mb-15(src="@/assets/images/left-quotes.png")
-            p.mb-15 {{info.brief_introduction}}
-            img.icon-right(src="@/assets/images/right-quotes.png")
-        .rich-content(v-html="info.content")
+        van-skeleton(title :row="3" :loading="loading") 
+            .article-info.mb-40
+                .title.mb-40 {{info.title}}
+                .date.mb-20 {{info.from_to}}
+                .author {{info.authorization}}
+        van-skeleton(:row="3" :loading="loading") 
+            .sentence.mb-70
+                img.icon-left.mb-15(src="@/assets/images/left-quotes.png")
+                p.mb-15 {{info.brief_introduction}}
+                img.icon-right(src="@/assets/images/right-quotes.png")
+        van-skeleton(title :row="10" :loading="loading") 
+            .rich-content(v-html="info.content")
     warp-footer
 </template>
 <script lang="ts">
-import { defineComponent, reactive, toRefs, onActivated } from "vue";
+import { defineComponent, reactive, toRefs, onActivated, ref } from "vue";
 import { useRoute } from "vue-router";
 import { getTeacherArticle } from "@/api/article-details";
 import { richImageWidth } from "@/utils/common";
@@ -30,19 +33,21 @@ export default defineComponent({
     components: { warpFooter },
     setup() {
         const route = useRoute();
+        const loading = ref<boolean>(true);
         const details = reactive<{ info: object }>({ info: {} });
         const { onClickLeft } = handleBack();
-        onActivated(() => {
+        onActivated((): void => {
             //获取详情
             getTeacherArticle({
                 article_id: route.query.id,
             }).then((res: any): void => {
                 res.content = richImageWidth(res.content);
                 details.info = res;
+                loading.value = false;
             });
         });
 
-        return { onClickLeft, ...toRefs(details) };
+        return { onClickLeft, ...toRefs(details), loading };
     },
 });
 </script>

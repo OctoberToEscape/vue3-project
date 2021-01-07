@@ -1,4 +1,4 @@
-import { Button, Image as VanImage, Popup, NavBar } from "vant";
+import { Button, Image as VanImage, Popup, NavBar, Skeleton } from "vant";
 
 export default {
     install(Vue: any) {
@@ -6,5 +6,6 @@ export default {
         Vue.use(VanImage);
         Vue.use(Popup);
         Vue.use(NavBar);
+        Vue.use(Skeleton);
     },
 };

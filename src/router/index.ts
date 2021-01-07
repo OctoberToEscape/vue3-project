@@ -13,7 +13,7 @@ const routes: Array<RouteRecordRaw> = [
         name: "index",
         component: () => import("@/views/index.vue"),
         meta: {
-            title: "首页",
+            title: "知鸦官网",
         },
     },
     {
