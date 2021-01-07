@@ -24,6 +24,14 @@ const routes: Array<RouteRecordRaw> = [
             title: "文萃精选",
         },
     },
+    {
+        path: "/privacy",
+        name: "privacy",
+        component: () => import("@/views/privacy.vue"),
+        meta: {
+            title: "隐私政策与服务协议",
+        },
+    },
 ];
 
 const scrollBehavior = (

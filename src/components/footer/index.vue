@@ -6,9 +6,11 @@
 </template>
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from "vue";
+import { useRouter } from "vue-router";
 export default defineComponent({
     name: "warp-footer",
     setup() {
+        const router = useRouter();
         const bar = reactive<{ nav: object[] }>({
             nav: [
                 { title: "服务协议", type: 1 },
@@ -17,7 +19,10 @@ export default defineComponent({
         });
 
         const handleRouter = (type: number): void => {
-            console.log(type);
+            router.push({
+                name: "privacy",
+                query: { type },
+            });
         };
         return {
             ...toRefs(bar),

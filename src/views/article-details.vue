@@ -19,7 +19,7 @@
     warp-footer
 </template>
 <script lang="ts">
-import { defineComponent, onMounted, reactive, toRefs } from "vue";
+import { defineComponent, reactive, toRefs, onActivated } from "vue";
 import { useRoute } from "vue-router";
 import { getTeacherArticle } from "@/api/article-details";
 import { richImageWidth } from "@/utils/common";
@@ -32,11 +32,12 @@ export default defineComponent({
         const route = useRoute();
         const details = reactive<{ info: object }>({ info: {} });
         const { onClickLeft } = handleBack();
-        onMounted(() => {
+        onActivated(() => {
             //获取详情
             getTeacherArticle({
                 article_id: route.query.id,
-            }).then((res) => {
+            }).then((res: any): void => {
+                res.content = richImageWidth(res.content);
                 details.info = res;
             });
         });
