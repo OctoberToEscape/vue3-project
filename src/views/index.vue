@@ -84,7 +84,7 @@
     //- 页脚
     warp-fotter
     //- 大屏视频
-    video-player(:show="dialogShow" @close="dialogShow = false")
+    video-player(:show="dialogShow" @handleClose="dialogShow = false" )
 </template>
 
 <script lang="ts">

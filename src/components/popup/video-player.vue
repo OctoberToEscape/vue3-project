@@ -4,10 +4,14 @@ van-popup.dialog(
     position="center"
     teleport="body"
     :close-on-popstate="true"
-    :safe-area-inset-bottom="true")
+    :safe-area-inset-bottom="true"
+    :close-on-click-overlay="false"
+    @open="open"
+    @close="close")
     .content
+        img.close(src="@/assets/images/close.png" @click="handleClose")
         video(
-            ref="refs"
+            ref="video"
             poster="@/assets/images/poster.png"
             src="https://zmbai.oss-cn-beijing.aliyuncs.com/website/zhu.mp4"
             controls="controls"
@@ -17,10 +21,11 @@ van-popup.dialog(
             x5-video-orientation="landscape"
             x5-video-player-fullscreen="true"
             x5-playsinline="true"
-            playsinline="true")
+            playsinline="true"
+            autoplay)
 </template>
 <script lang="ts">
-import { defineComponent, ref, watch, watchEffect } from "vue";
+import { defineComponent, onMounted, ref, watch, watchEffect } from "vue";
 export default defineComponent({
     name: "video-player",
     props: {
@@ -31,37 +36,45 @@ export default defineComponent({
             },
         },
     },
-    setup(props) {
+    setup(props, { emit }) {
         const dialog = ref<boolean>(false);
-        const refs = ref<any>(null);
+        const video = ref<HTMLVideoElement | null>(null);
 
         watchEffect((): void => {
             dialog.value = props.show;
         });
 
-        //监听弹窗显示隐藏控制播放
-        watch(
-            () => dialog.value,
-            (v) => {
-                if (v) {
-                    console.log("播放", refs.value);
-                } else {
-                    console.log("暂停", refs.value);
-                }
-            }
-        );
+        onMounted(() => {
+            video.value = document.querySelector("video");
+        });
 
-        return { dialog, refs };
+        const open = (): void => {
+            if (video.value) video.value.play();
+        };
+
+        const close = (): void => {
+            if (video.value) video.value.pause();
+        };
+
+        const handleClose = (): void => {
+            emit("handleClose");
+        };
+
+        return { dialog, video, open, close, handleClose };
     },
 });
 </script>
 <style lang="scss" scoped>
 .dialog {
-    background: $zy_bg_white;
     .content {
-        @include boxSize(7.5rem, 4rem);
+        @include boxSize(7.5rem, auto);
+        .close {
+            @include boxSize(0.44rem, 0.44rem);
+            display: block;
+            margin: 0rem auto 0.6rem;
+        }
         video {
-            @include boxSize(100%, 100%);
+            @include boxSize(100%, 4.24rem);
             display: block;
             object-fit: fill;
         }

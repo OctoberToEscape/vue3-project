@@ -5,7 +5,8 @@ van-popup.dialog(
     position="bottom"
     teleport="body"
     :close-on-popstate="true"
-    :safe-area-inset-bottom="true")
+    :safe-area-inset-bottom="true"
+    @close="close")
     .content
         .title.mb-30 {{title}}
         .desc {{desc}}
@@ -28,7 +29,7 @@ export default defineComponent({
             },
         },
     },
-    setup(props) {
+    setup(props, { emit }) {
         const dialog = ref<Boolean>(false);
         const info = reactive<{ title: string; desc: string }>({
             title: "",
@@ -39,14 +40,19 @@ export default defineComponent({
             info.title = props.inf.title;
             info.desc = props.inf.desc;
         });
-        return { dialog, ...toRefs(info) };
+
+        const close = (): void => {
+            emit("close");
+        };
+
+        return { dialog, ...toRefs(info), close };
     },
 });
 </script>
 <style lang="scss" scoped>
 .dialog {
-    background: $zy_bg_white;
     .content {
+        background: $zy_bg_white;
         @include Padding(0.4rem, 0.32rem);
         .title {
             @include fontColor(
