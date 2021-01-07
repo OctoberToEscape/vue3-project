@@ -1,6 +1,6 @@
 <template lang="pug">
 router-view(v-slot="{ Component }")
-    keep-alive
+    keep-alive(exclude="article-details")
         component(:is="Component") 
 </template>
 

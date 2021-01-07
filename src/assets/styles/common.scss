@@ -48,6 +48,10 @@
     margin-right: 0.3rem;
 }
 
-.van-popup {
+.van-popup.dialog {
     background-color: transparent !important;
+}
+
+.van-nav-bar .van-icon {
+    color: #323233 !important;
 }

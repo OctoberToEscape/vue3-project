@@ -82,7 +82,7 @@
             p 畅学全新通识课程
         .desc 严肃的内容是对读者最大的尊重。加入我们，在明白世界的这条道路上，你永远不会孤单。
     //- 页脚
-    warp-fotter
+    warp-footer
     //- 大屏视频
     video-player(:show="dialogShow" @handleClose="dialogShow = false" )
 </template>
@@ -108,11 +108,11 @@ import {
 import { FullScreen } from "@/utils/interface";
 import videoArea from "@/components/videoArea/index.vue";
 import intro from "@/components/introduce/index.vue";
-import warpFotter from "@/components/footer/index.vue";
+import warpFooter from "@/components/footer/index.vue";
 import videoPlayer from "@/components/popup/video-player.vue";
 export default defineComponent({
     name: "index",
-    components: { videoArea, intro, warpFotter, videoPlayer },
+    components: { videoArea, intro, warpFooter, videoPlayer },
     setup() {
         const router = useRouter();
         const dialogShow = ref<boolean>(false);
@@ -187,7 +187,10 @@ export default defineComponent({
         //名师文萃跳转详情页
         const handleDetails = (id: number | string, type: number): void => {
             if (type === 1) {
-                console.log(`跳转详情${id}`);
+                router.push({
+                    name: "article-details",
+                    query: { id },
+                });
             }
         };
 

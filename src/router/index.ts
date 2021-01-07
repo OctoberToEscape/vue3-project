@@ -17,11 +17,11 @@ const routes: Array<RouteRecordRaw> = [
         },
     },
     {
-        path: "/test",
-        name: "test",
-        component: () => import("@/views/test.vue"),
+        path: "/article-details",
+        name: "article-details",
+        component: () => import("@/views/article-details.vue"),
         meta: {
-            title: "测试页面",
+            title: "文萃精选",
         },
     },
 ];
