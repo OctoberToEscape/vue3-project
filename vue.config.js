@@ -16,8 +16,6 @@ module.exports = {
         sourceMap: false,
     },
     configureWebpack: () => {
-        // https://api.lishizg.online/v2
-        // https://v2.diancang.site/v2
         if (process.env.NODE_ENV === "development") {
             return {
                 devServer: {
@@ -31,6 +29,8 @@ module.exports = {
                                 "^/api": "",
                             },
                         },
+                        // 线上:https://api.lishizg.online/v2
+                        // 测试:https://v2.diancang.site/v2
                         "/gcApi": {
                             target: "https://v2.diancang.site/v2",
                             changeOrigin: true,

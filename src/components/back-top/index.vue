@@ -16,32 +16,32 @@ export default defineComponent({
                 return "circle";
             },
         },
-        //定位底部位置
+        //定位底部位置，单位rem
         bottom: {
             type: Number,
             default: (): number => {
-                return 1;
+                return 2;
             },
         },
-        //定位右边位置
+        //定位右边位置，单位rem
         right: {
             type: Number,
             default: (): number => {
                 return 0.4;
             },
         },
-        //已经滚动的距离
+        //已经滚动的距离，单位rem
         scrollTop: {
             type: Number,
             default: (): number => {
                 return 0;
             },
         },
-        //滚动多少展示
+        //滚动多少展示，单位rem
         top: {
             type: Number,
             default: (): number => {
-                return 4;
+                return 10;
             },
         },
         //icon图标名字
@@ -58,7 +58,7 @@ export default defineComponent({
                 return "rgb(144, 147, 153)";
             },
         },
-        //icon大小
+        //icon大小，单位rem
         iconSize: {
             type: Number,
             default: (): number => {
