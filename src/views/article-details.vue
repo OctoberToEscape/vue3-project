@@ -20,15 +20,17 @@
         van-skeleton(title :row="10" :loading="loading") 
             .rich-content(v-html="info.content")
     warp-footer
+    back-top(mode="square" duration="smooth" :scrollTop="scrollTop")
 </template>
 <script lang="ts">
-import { defineComponent, reactive, toRefs, onActivated, ref } from "vue";
+import { defineComponent, ref, reactive, toRefs, onActivated } from "vue";
 import { useRoute } from "vue-router";
 import { getTeacherArticle } from "@/api/article-details";
 import { richImageWidth } from "@/utils/common";
 import handleBack from "@/hooks/handleBack";
 import warpFooter from "@/components/footer/index.vue";
 import backTop from "@/components/back-top/index.vue";
+import handleBackTop from "@/hooks/backTop";
 export default defineComponent({
     name: "article-details",
     components: { warpFooter, backTop },
@@ -37,6 +39,7 @@ export default defineComponent({
         const loading = ref<boolean>(true);
         const details = reactive<{ info: object }>({ info: {} });
         const { onClickLeft } = handleBack();
+        const { scrollTop, handleScroll } = handleBackTop();
         onActivated((): void => {
             //获取详情
             getTeacherArticle({
@@ -48,7 +51,13 @@ export default defineComponent({
             });
         });
 
-        return { onClickLeft, ...toRefs(details), loading };
+        return {
+            ...toRefs(details),
+            onClickLeft,
+            scrollTop,
+            loading,
+            handleScroll,
+        };
     },
 });
 </script>

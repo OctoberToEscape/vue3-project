@@ -8,6 +8,7 @@
         @click-left="onClickLeft")
     van-skeleton(title :row="15" :loading="loading") 
         .rich(v-html="info.content")
+    back-top(mode="square" duration="smooth" :scrollTop="scrollTop")
 </template>
 <script lang="ts">
 import { defineComponent, reactive, toRefs, onActivated, ref } from "vue";
@@ -16,6 +17,7 @@ import { useRoute } from "vue-router";
 import { richImageWidth } from "@/utils/common";
 import handleBack from "@/hooks/handleBack";
 import backTop from "@/components/back-top/index.vue";
+import handleBackTop from "@/hooks/backTop";
 export default defineComponent({
     name: "privacy",
     components: { backTop },
@@ -24,6 +26,7 @@ export default defineComponent({
         const privacy = reactive<{ info: object }>({ info: {} });
         const loading = ref<boolean>(true);
         const { onClickLeft } = handleBack();
+        const { scrollTop, handleScroll } = handleBackTop();
 
         onActivated((): void => {
             getPrivacy(route.query.type).then((res: any): void => {
@@ -33,10 +36,13 @@ export default defineComponent({
                 loading.value = false;
             });
         });
+
         return {
             ...toRefs(privacy),
             onClickLeft,
             loading,
+            handleScroll,
+            scrollTop,
         };
     },
 });
